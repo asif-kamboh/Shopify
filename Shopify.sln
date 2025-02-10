@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopify.Api", "Shopify.Api\Shopify.Api.csproj", "{7577D9E6-517F-42D8-97A0-0472F7DC1863}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Shopify", "Service.Shopify\Service.Shopify.csproj", "{35F0235B-F298-4641-B078-B9ED38DFD898}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7577D9E6-517F-42D8-97A0-0472F7DC1863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7577D9E6-517F-42D8-97A0-0472F7DC1863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7577D9E6-517F-42D8-97A0-0472F7DC1863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7577D9E6-517F-42D8-97A0-0472F7DC1863}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35F0235B-F298-4641-B078-B9ED38DFD898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35F0235B-F298-4641-B078-B9ED38DFD898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35F0235B-F298-4641-B078-B9ED38DFD898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35F0235B-F298-4641-B078-B9ED38DFD898}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
