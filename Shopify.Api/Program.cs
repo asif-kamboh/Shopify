@@ -1,5 +1,5 @@
-using Service.Shopify.Auth;
-using Service.Shopify.Extensions;
+using ScientificBit.Shopify.Auth;
+using ScientificBit.Shopify.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
