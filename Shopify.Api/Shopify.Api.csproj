@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Service.Shopify\Service.Shopify.csproj" />
+      <ProjectReference Include="..\ScientificBit.Shopify\ScientificBit.Shopify.csproj" />
     </ItemGroup>
 
 </Project>

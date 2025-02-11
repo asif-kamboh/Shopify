@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service.Shopify.Abstractions.Repo;
-using Service.Shopify.Auth;
-using Service.Shopify.Models;
-using Service.Shopify.Requests.Webhooks;
+using ScientificBit.Shopify.Abstractions.Repo;
+using ScientificBit.Shopify.Auth;
+using ScientificBit.Shopify.Models;
+using ScientificBit.Shopify.Requests.Webhooks;
 
 namespace Shopify.Api.Controllers.Shopify;
 
