@@ -57,4 +57,4 @@ Contribution guidelines will be added shortly
 ## Support The Developer
 Please support me to help cover ongoing development, infrastructure costs, and the potential expansion of the project (including new features, testing, and documentation).
 <br/>
-Donate now via https://opencollective.com/sbshopify
+Please contact asif@scientificbit.com for donations
