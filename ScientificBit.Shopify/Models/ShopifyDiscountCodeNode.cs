@@ -45,7 +45,7 @@ public class DiscountCodeBasic
     public int UsageCount => AsyncUsageCount;
 
     [JsonIgnore]
-    public IList<string> DiscountCodes => Codes?.Nodes.Select(c => c.Code ?? "").ToList() ?? new List<string>();
+    public IList<string> DiscountCodes => Codes?.Nodes?.Select(c => c.Code ?? "").ToList() ?? new List<string>();
 
     [JsonIgnore]
     public double? DiscountValue => CustomerGets?.Value?.Amount?.Amount;
