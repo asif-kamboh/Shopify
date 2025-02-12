@@ -16,8 +16,8 @@ internal class ShopifyConfigurationBuilder
             if (secrets is null) continue;
 
             if (!string.IsNullOrEmpty(secrets.AdminApiToken)) channel.AdminApiToken = secrets.AdminApiToken;
-            if (!string.IsNullOrEmpty(secrets.StorefrontApiToken)) channel.AdminApiToken = secrets.StorefrontApiToken;
-            if (!string.IsNullOrEmpty(secrets.WebhookApiSecret)) channel.AdminApiToken = secrets.WebhookApiSecret;
+            if (!string.IsNullOrEmpty(secrets.StorefrontApiToken)) channel.StorefrontApiToken = secrets.StorefrontApiToken;
+            if (!string.IsNullOrEmpty(secrets.WebhookApiSecret)) channel.WebhookApiSecret = secrets.WebhookApiSecret;
         }
 
         return shopifyConfig;
