@@ -74,10 +74,17 @@ public class VariantQueryBuilder : GenericQueryBuilder<VariantsConnectionArgs>
 
     public VariantQueryBuilder AddInventoryItem(string locationId)
     {
+        return AddInventoryItem(locationId, _ => { });
+    }
+
+    public VariantQueryBuilder AddInventoryItem(string locationId, Action<InventoryLevelFragment> inventoryLevelFragmentBuilder)
+    {
         var inventoryLevelArgs = new InventoryLevelArgs {LocationId = locationId};
         var inventorItemFragment = new GraphQlFragment("inventoryItem");
         inventorItemFragment.AddFields(new[] {"id", "sku", "requiresShipping"});
-        inventorItemFragment.AddFragment(new InventoryLevelFragment("inventoryLevel", inventoryLevelArgs));
+        var inventoryLevelFragment = new InventoryLevelFragment("inventoryLevel", inventoryLevelArgs);
+        inventoryLevelFragmentBuilder.Invoke(inventoryLevelFragment);
+        inventorItemFragment.AddFragment(inventoryLevelFragment);
         return this.AddFragment(inventorItemFragment);
     }
 }

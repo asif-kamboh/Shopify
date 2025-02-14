@@ -24,8 +24,12 @@ public class InventoryItemQueryBuilder : GenericQueryBuilder<InventoryItemsConne
 
     public static InventoryItemQueryBuilder QueryAll()
     {
-        var builder = new InventoryItemQueryBuilder("inventoryItems", "inventoryItems", DefaultFields,
-            new InventoryItemsConnectionArgs {First = 10});
+        return QueryAll(new InventoryItemsConnectionArgs {First = 10});
+    }
+
+    public static InventoryItemQueryBuilder QueryAll(InventoryItemsConnectionArgs args)
+    {
+        var builder = new InventoryItemQueryBuilder("inventoryItems", "inventoryItems", DefaultFields, args);
         return builder;
     }
 

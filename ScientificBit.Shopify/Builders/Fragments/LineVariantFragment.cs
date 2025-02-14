@@ -8,6 +8,5 @@ public sealed class LineVariantFragment : GraphQlFragment
     {
         AddFields(new[] {"id", "title", "weight"});
         AddFragment(new ImageFragment());
-        AddFragment(new TranslationsFragment("ar"));
     }
 }

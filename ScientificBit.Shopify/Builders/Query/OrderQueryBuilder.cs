@@ -70,15 +70,22 @@ public class OrderQueryBuilder : GenericQueryBuilder<OrdersConnectionArgs>
         AddDiscountApplications();
         AddShippingPrice();
         AddShippingLine();
-        AddTransactions(5);
+        AddTransactions();
         AddRefunds();
         return this;
     }
 
     public OrderQueryBuilder AddLineItems(GraphQlConnectionArgs? args = null)
     {
-        args ??= new OrdersConnectionArgs { First = 100 };
-        return this.AddFragment(new OrderLineItemsFragment("lineItems", args));
+        return AddLineItems(_ => { }, args);
+    }
+
+    public OrderQueryBuilder AddLineItems(Action<OrderLineItemsFragment> fragmentBuilder, GraphQlConnectionArgs? args = null)
+    {
+        args ??= new GraphQlConnectionArgs { First = 100 };
+        var fragment = new OrderLineItemsFragment("lineItems", args);
+        fragmentBuilder.Invoke(fragment);
+        return this.AddFragment(fragment);
     }
 
     public OrderQueryBuilder AddBillingAddress()
@@ -109,24 +116,50 @@ public class OrderQueryBuilder : GenericQueryBuilder<OrdersConnectionArgs>
 
     public OrderQueryBuilder AddShippingLine()
     {
-        return this.AddFragment(new ShippingLineFragment("shippingLine"));
+        return AddShippingLine(_ => { });
+    }
+
+    public OrderQueryBuilder AddShippingLine(Action<ShippingLineFragment> fragmentBuilder)
+    {
+        var fragment = new ShippingLineFragment("shippingLine");
+        fragmentBuilder.Invoke(fragment);
+        return this.AddFragment(fragment);
     }
 
     public OrderQueryBuilder AddShippingLines(int count, bool includeRemovals = false)
     {
         var args = new ShippingLinesConnectionArgs {First = count, IncludeRemovals = includeRemovals};
-        return this.AddFragment(new ShippingLinesFragment("shippingLines", args));
+        return AddShippingLines(args, _ => { });
+    }
+
+    public OrderQueryBuilder AddShippingLines(ShippingLinesConnectionArgs args, Action<ShippingLinesFragment> fragmentBuilder)
+    {
+        var fragment = new ShippingLinesFragment("shippingLines", args);
+        fragmentBuilder.Invoke(fragment);
+        return this.AddFragment(fragment);
     }
 
     public OrderQueryBuilder AddTransactions(int count = 5)
     {
         var args = new OrderTransactionArgs { First = count };
+        return AddTransactions(args);
+    }
+
+    public OrderQueryBuilder AddTransactions(OrderTransactionArgs args)
+    {
         return this.AddFragment(new OrderTransactionFragment("transactions", args));
     }
 
     public OrderQueryBuilder AddRefunds(int count = 5)
     {
         var args = new RefundArgs {First = count};
-        return this.AddFragment(new RefundFragment("refunds", args));
+        return AddRefunds(args, _ => { });
+    }
+
+    public OrderQueryBuilder AddRefunds(RefundArgs args, Action<RefundFragment> fragmentBuilder)
+    {
+        var fragment = new RefundFragment("refunds", args);
+        fragmentBuilder.Invoke(fragment);
+        return this.AddFragment(fragment);
     }
 }

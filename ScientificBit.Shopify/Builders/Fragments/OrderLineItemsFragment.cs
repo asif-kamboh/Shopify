@@ -12,17 +12,38 @@ public sealed class OrderLineItemsFragment : GraphQlNodesFragment<GraphQlFragmen
 
     public void AddProduct()
     {
-        AddFragment(new LineProductFragment("product"));
+        AddProduct(_ => { });
+    }
+
+    public void AddProduct(Action<LineProductFragment> fragmentBuilder)
+    {
+        var fragment = new LineProductFragment("product");
+        fragmentBuilder.Invoke(fragment);
+        AddFragment(fragment);
     }
 
     public void AddVariant()
     {
-        AddFragment(new LineVariantFragment("variant"));
+        AddVariant(_ => { });
+    }
+
+    public void AddVariant(Action<LineVariantFragment> fragmentBuilder)
+    {
+        var fragment = new LineVariantFragment("variant");
+        fragmentBuilder.Invoke(fragment);
+        AddFragment(fragment);
     }
 
     public void AddDiscountAllocations()
     {
-        AddFragment(new DiscountAllocationFragment("discountAllocations"));
+        AddDiscountAllocations(_ => { });
+    }
+
+    public void AddDiscountAllocations(Action<DiscountAllocationFragment> fragmentBuilder)
+    {
+        var fragment = new DiscountAllocationFragment("discountAllocations");
+        fragmentBuilder.Invoke(fragment);
+        AddFragment(fragment);
     }
 
     public void AddDiscountedTotal()
