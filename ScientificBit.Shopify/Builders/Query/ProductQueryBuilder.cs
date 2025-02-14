@@ -14,7 +14,7 @@ public class ProductQueryBuilder : GenericQueryBuilder<ProductsConnectionArgs>
 
     public static ProductQueryBuilder QueryAll()
     {
-        return QueryAll(new ProductsConnectionArgs());
+        return QueryAll(new ProductsConnectionArgs {First = 10});
     }
 
     public static ProductQueryBuilder QueryAll(ProductsConnectionArgs args)

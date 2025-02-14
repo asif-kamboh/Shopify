@@ -102,7 +102,7 @@ public class GenericQueryBuilder
             .Replace("\n", " ")
             .Replace("{", " { ")
             .Replace("}", " } ")
-            .Replace(",", ", ")
+            // .Replace(",", ", ")
             .Replace("  ", " ");
 
         // Using regex to remove multiple spaces and newlines

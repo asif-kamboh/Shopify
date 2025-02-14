@@ -3,11 +3,10 @@ using ScientificBit.Shopify.Requests.GraphQl;
 
 namespace ScientificBit.Shopify.Requests.Admin.Mutations;
 
-public class ProductCreateMutation : GraphQlMutationBase
+public class VariantsDeleteMutation : GraphQlMutationBase
 {
-    private const string Mutation = @"mutation productCreate($product: ProductCreateInput, $media:[CreateMediaInput!]) {
-        productCreate(product: $product, media: $media) {
-            product { id title }
+    private const string Mutation = @"mutation bulkDeleteProductVariants($productId: ID!, $variantsIds: [ID!]!) {
+        productVariantsBulkDelete(productId: $productId, variantsIds: $variantsIds) {
             userErrors { field message }
         }
     }";

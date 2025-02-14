@@ -37,4 +37,8 @@ public interface IShopifyVariantsRepository
 
     Task<GraphQlResults<TVariant>> GetVariantsAsync<TVariant>(string productId,
         Action<VariantQueryBuilder> queryBuilder) where TVariant : new();
+
+    Task<GraphQlResult<List<string>>> DeleteVariantAsync(string productId, string variantId);
+
+    Task<GraphQlResult<List<string>>> DeleteVariantsAsync(string productId, IEnumerable<string> variantIds);
 }

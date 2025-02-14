@@ -32,6 +32,12 @@ public static class ShopifyUtils
         return long.TryParse(token, out var numericId) ? numericId : 0;
     }
 
+    public static string GetLocationId(string? locationId)
+    {
+        if (string.IsNullOrEmpty(locationId)) return "";
+        return long.TryParse(locationId, out var numericId) ? $"gid://shopify/Location/{numericId}" : locationId;
+    }
+
     public static string GetProductId(long productId) => $"gid://shopify/Product/{productId}";
 
     public static string GetVariantId(long variantId) => $"gid://shopify/ProductVariant/{variantId}";

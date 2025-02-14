@@ -15,7 +15,7 @@ public class VariantQueryBuilder : GenericQueryBuilder<VariantsConnectionArgs>
 
     public static VariantQueryBuilder QueryAll()
     {
-        return QueryAll(new VariantsConnectionArgs());
+        return QueryAll(new VariantsConnectionArgs {First = 10});
     }
 
     public static VariantQueryBuilder QueryAll(VariantsConnectionArgs? args, bool pagination = false)

@@ -32,7 +32,7 @@ public class OrderQueryBuilder : GenericQueryBuilder<OrdersConnectionArgs>
 
     public static OrderQueryBuilder QueryAll()
     {
-        return QueryAll(new OrdersConnectionArgs());
+        return QueryAll(new OrdersConnectionArgs {First = 10});
     }
 
     public static OrderQueryBuilder QueryAll(OrdersConnectionArgs args)

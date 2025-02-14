@@ -54,12 +54,19 @@ internal class ShopifyProductsRepository : IShopifyProductsRepository
         {
             Variables = new
             {
-                Product = product
+                Product = product,
+                Media = new object[] {}
             }
         };
-        var response = await _apiClient.RunMutationAsync<ProductGetResponse<TProduct>>(mutation);
 
-        return GraphQlResultMapper.CreateResult(response.Data.Product, response.Data.UserErrors, response.Errors);
+        var response = await _apiClient.RunMutationAsync<ProductCreateResponse<TProduct>>(mutation);
+        var result = response.Data?.ProductCreate;
+        if (result is not null)
+        {
+            return GraphQlResultMapper.CreateResult(result.Product, result.UserErrors, response.Errors);
+        }
+
+        return GraphQlResultMapper.CreateResult(default(TProduct), null, response.Errors);
     }
 
     public Task<GraphQlResults<ShopifyProduct>> GetProductsAsync(Action<ProductQueryBuilder> action)
@@ -80,6 +87,11 @@ internal class ShopifyProductsRepository : IShopifyProductsRepository
 
         return GraphQlResultMapper.CreateResult(response.Data.Products, response.Data.UserErrors, response.Errors);
     }
+}
+
+internal class ProductCreateResponse<TProduct> where TProduct : new()
+{
+    public ProductGetResponse<TProduct>? ProductCreate { get; set; }
 }
 
 internal class ProductGetResponse<TProduct> : AdminApiResponse where TProduct : new()
