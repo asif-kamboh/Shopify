@@ -6,7 +6,7 @@ public class GraphQlIdQueryStringParam
 {
     public long Id { get; set; }
 
-    public GraphQlRangeQueryParamOperator Op { get; set; }
+    public GraphQlRangeQueryParamOperator Op { get; set; } = GraphQlRangeQueryParamOperator.Equal;
 
     public override string ToString()
     {

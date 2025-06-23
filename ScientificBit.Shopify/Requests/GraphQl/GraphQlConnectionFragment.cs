@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace ScientificBit.Shopify.Requests.GraphQl;
 
 public class GraphQlConnectionFragment<TNodeFragment> : GraphQlFragment where TNodeFragment : GraphQlFragment

@@ -6,7 +6,6 @@ using ScientificBit.Shopify.Abstractions.Repo;
 using ScientificBit.Shopify.Auth;
 using ScientificBit.Shopify.Clients;
 using ScientificBit.Shopify.Clients.GraphQl;
-using ScientificBit.Shopify.Clients.Handlers;
 using ScientificBit.Shopify.Configuration;
 using ScientificBit.Shopify.Domain;
 
@@ -27,9 +26,6 @@ public static class ShopifyServicesExtension
             services.AddScoped<IShopifyApiTokensAccessor, DefaultApiTokensAccessor>();
         }
 
-        services.AddScoped<AdminRestApiMessageHandler>();
-        services.AddScoped<AdminGraphQlApiMessageHandler>();
-        services.AddScoped<StorefrontApiMessageHandler>();
         services.AddScoped<IAdminApiClient, AdminApiClient>();
         services.AddScoped<IStorefrontApiClient, StorefrontApiClient>();
         services.AddScoped<IShopifyMetaObjectService, ShopifyMetaObjectService>();

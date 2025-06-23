@@ -8,6 +8,6 @@ public sealed class PageInfoFragment : GraphQlFragment
 
     public PageInfoFragment(string name) : base(name)
     {
-        AddFields(new []{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"});
+        AddFields(new[] {"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"});
     }
 }

@@ -8,6 +8,5 @@ public sealed class LineProductFragment : GraphQlFragment
     {
         AddFields(new[] {"id", "title", "handle"});
         AddFragment(new GraphQlNodesFragment<ImageFragment>("images", new GraphQlConnectionArgs {First = 1}));
-        AddFragment(new TranslationsFragment("ar"));
     }
 }

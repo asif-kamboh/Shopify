@@ -14,7 +14,7 @@ public class ProductQueryBuilder : GenericQueryBuilder<ProductsConnectionArgs>
 
     public static ProductQueryBuilder QueryAll()
     {
-        return QueryAll(new ProductsConnectionArgs());
+        return QueryAll(new ProductsConnectionArgs {First = 10});
     }
 
     public static ProductQueryBuilder QueryAll(ProductsConnectionArgs args)
@@ -40,7 +40,10 @@ public class ProductQueryBuilder : GenericQueryBuilder<ProductsConnectionArgs>
     {
         var args = new OptionsQueryArgs {First = count};
         var fragment = new ProductOptionFragment("options", args);
-        fragment.AddFragment(new TranslationsFragment("translations", new TranslationQueryArgs {Locale = locale}));
+        if (!string.IsNullOrEmpty(locale))
+        {
+            fragment.AddFragment(new TranslationsFragment("translations", new TranslationQueryArgs {Locale = locale}));
+        }
         return this.AddFragment(fragment);
     }
 

@@ -11,6 +11,12 @@ public interface IGraphQlFragment
 
 public class GraphQlFragment : IGraphQlFragment
 {
+    public string Name { get; }
+
+    public IGraphQlQueryArgs? Args { get; }
+
+    public IList<IGraphQlFragment> Fragments => _fragments.ToList();
+
     private readonly List<IGraphQlFragment> _fragments = new ();
 
     public GraphQlFragment(string name, IGraphQlQueryArgs? args = null)
@@ -65,14 +71,14 @@ public class GraphQlFragment : IGraphQlFragment
     {
         var args = Args?.ToString();
         var name = !string.IsNullOrEmpty(args) ? $"{Name.Trim()}({args})" : Name.Trim();
-        var tokens = _fragments.Select(f => f.ToString()).ToArray();
-        var fragmentStr = tokens.Any() ? $"{{ {string.Join(" ", tokens)} }}" : "";
-        return $"{name} {fragmentStr}".Trim();
+        var fragmentStr = SerializedFragments();
+        return !string.IsNullOrEmpty(fragmentStr) ? $"{name} {fragmentStr}".Trim() : "";
     }
 
-    public string Name { get; }
-
-    public IList<IGraphQlFragment> Fragments => _fragments.ToList(); 
-
-    public IGraphQlQueryArgs? Args { get; }
+    protected string SerializedFragments()
+    {
+        var tokens = _fragments.Select(f => f.ToString() ?? "").ToList();
+        var fragmentStr = tokens.Any() ? $"{{ {string.Join(" ", tokens)} }}" : "";
+        return fragmentStr;
+    }
 }

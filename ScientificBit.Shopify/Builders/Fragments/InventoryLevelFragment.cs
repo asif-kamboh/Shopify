@@ -14,6 +14,11 @@ public sealed class InventoryLevelFragment : GraphQlFragment
         AddFragment(new ShopifyIdFragment("location"));
 
         var quantityArgs = new InventoryLevelQuantityArgs("available", "on_hand");
-        AddFragment(new InventoryLevelQuantityFragment("quantities", quantityArgs));
+        AddQuantities(quantityArgs);
+    }
+
+    public void AddQuantities(InventoryLevelQuantityArgs args)
+    {
+        AddFragment(new InventoryLevelQuantityFragment("quantities", args));
     }
 }
