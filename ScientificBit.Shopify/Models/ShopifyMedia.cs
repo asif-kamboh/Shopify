@@ -9,4 +9,6 @@ public class ShopifyMedia : ShopifyBaseModel
     public string? Status { get; set; }
 
     public MediaPreviewImage? Preview { get; set; }
+
+    public ShopifyImage? Image { get; set; }
 }

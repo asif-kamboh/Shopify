@@ -62,7 +62,7 @@ public class VariantQueryBuilder : GenericQueryBuilder<VariantsConnectionArgs>
 
     public VariantQueryBuilder AddSelectedOptions()
     {
-        var fragment = new GraphQlFragment("image");
+        var fragment = new GraphQlFragment("selectedOptions");
         fragment.AddFields(new[] {"name", "value"});
         return this.AddFragment(fragment);
     }
