@@ -14,7 +14,6 @@
       <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
       <PackageReference Include="Refit.Newtonsoft.Json" Version="7.0.0" />
       <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
-      <PackageReference Include="Shopify.Multipass" Version="1.0.0-preview" />
     </ItemGroup>
 
     <ItemGroup>

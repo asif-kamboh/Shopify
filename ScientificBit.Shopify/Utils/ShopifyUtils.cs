@@ -38,6 +38,8 @@ public static class ShopifyUtils
         return long.TryParse(locationId, out var numericId) ? $"gid://shopify/Location/{numericId}" : locationId;
     }
 
+    public static string GetCollectionId(long collectionId) => $"gid://shopify/Collection/{collectionId}";
+
     public static string GetProductId(long productId) => $"gid://shopify/Product/{productId}";
 
     public static string GetVariantId(long variantId) => $"gid://shopify/ProductVariant/{variantId}";

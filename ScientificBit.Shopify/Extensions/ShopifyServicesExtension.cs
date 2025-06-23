@@ -26,6 +26,11 @@ public static class ShopifyServicesExtension
             services.AddScoped<IShopifyApiTokensAccessor, DefaultApiTokensAccessor>();
         }
 
+        if (!string.IsNullOrEmpty(shopifyConfig.MultipassSecret))
+        {
+            services.AddScoped<IShopifyMultipassTokenGenerator>(_ =>
+                new ShopifyMultipassTokenGenerator(shopifyConfig.MultipassSecret, shopifyConfig.StoreDomain));
+        }
         services.AddScoped<IAdminApiClient, AdminApiClient>();
         services.AddScoped<IStorefrontApiClient, StorefrontApiClient>();
         services.AddScoped<IShopifyMetaObjectService, ShopifyMetaObjectService>();
