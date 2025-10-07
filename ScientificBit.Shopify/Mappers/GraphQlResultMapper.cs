@@ -6,6 +6,32 @@ namespace ScientificBit.Shopify.Mappers;
 
 internal static class GraphQlResultMapper
 {
+    public static GraphQlResult<TDocument> BuildResult<TDocument>(IGraphQLResponse gqlResponse, Func<GraphQlResult<TDocument>> fn)
+        where TDocument : new()
+    {
+        try
+        {
+            return fn.Invoke();
+        }
+        catch (Exception)
+        {
+            return new GraphQlResult<TDocument> { GraphQlErrors = GetGraphQlErrors(gqlResponse.Errors) };
+        }
+    }
+
+    public static GraphQlResults<TDocument> BuildResults<TDocument>(IGraphQLResponse gqlResponse, Func<GraphQlResults<TDocument>> fn)
+        where TDocument : new()
+    {
+        try
+        {
+            return fn.Invoke();
+        }
+        catch (Exception)
+        {
+            return new GraphQlResults<TDocument> { GraphQlErrors = GetGraphQlErrors(gqlResponse.Errors) };
+        }
+    }
+
     public static GraphQlResult<TDocument> CreateResult<TDocument>(TDocument? data,
         IList<AdminApiResponse.UserError>? userErrors,
         GraphQLError[]? graphQlErrors) where TDocument : new ()
@@ -46,7 +72,7 @@ internal static class GraphQlResultMapper
         return result;
     }
 
-    private static string? GetUserError(IList<AdminApiResponse.UserError>? userErrors)
+    public static string? GetUserError(IList<AdminApiResponse.UserError>? userErrors)
     {
         return userErrors?.FirstOrDefault()?.Message;
     }

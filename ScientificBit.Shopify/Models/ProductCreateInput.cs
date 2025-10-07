@@ -29,7 +29,7 @@ public class ProductCreateInput
 
     public string? ProductType { get; set; }
 
-    public string Status { get; set; } = ProductStatus.Draft.ToString().ToUpper(); // ACTIVE, ARCHIVED, DRAFT
+    public string Status { get; set; } = nameof(ProductStatus.Draft).ToUpper(); // ACTIVE, ARCHIVED, DRAFT
 
     public IList<string>? Tags { get; set; }
 

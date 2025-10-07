@@ -76,7 +76,9 @@ internal class ShopifyVariantsRepository : IShopifyVariantsRepository
 
         var response = await _client.RunQueryAsync<VariantGetResponse<TVariant>>(query);
 
-        return GraphQlResultMapper.CreateResult(response.Data.ProductVariant, response.Data.UserErrors, response.Errors);
+        return GraphQlResultMapper.BuildResult(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.ProductVariant, response.Data.UserErrors, response.Errors)
+        );
     }
 
     public async Task<GraphQlResults<TVariant>> GetVariantsAsync<TVariant>(Action<VariantQueryBuilder> queryBuilder) where TVariant : new()
@@ -86,7 +88,9 @@ internal class ShopifyVariantsRepository : IShopifyVariantsRepository
 
         var response = await _client.RunQueryAsync<VariantsGetResponse<TVariant>>(builder.Build());
 
-        return GraphQlResultMapper.CreateResult(response.Data.ProductVariants, response.Data.UserErrors, response.Errors);
+        return GraphQlResultMapper.BuildResults(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.ProductVariants, response.Data.UserErrors, response.Errors)
+        );
     }
 
     public Task<GraphQlResults<TVariant>> GetVariantsAsync<TVariant>(IList<string> variantIds, Action<VariantQueryBuilder> queryBuilder) where TVariant : new()

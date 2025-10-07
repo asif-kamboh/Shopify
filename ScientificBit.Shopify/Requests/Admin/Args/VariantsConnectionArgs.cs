@@ -1,3 +1,4 @@
+using ScientificBit.Shopify.Models;
 using ScientificBit.Shopify.Requests.GraphQl;
 
 namespace ScientificBit.Shopify.Requests.Admin.Args;
@@ -6,7 +7,7 @@ public class VariantsConnectionArgs : GraphQlConnectionArgs
 {
     public VariantsQueryParams? Query { get; set; }
 
-    public string? SortKey { get; set; }
+    public ShopifySortKey? SortKey { get; set; }
 }
 
 public class VariantsQueryParams : ProductsCommonQueryParams
