@@ -1,3 +1,4 @@
+using ScientificBit.Shopify.Models;
 using ScientificBit.Shopify.Utils;
 
 namespace ScientificBit.Shopify.Requests.GraphQl;
@@ -36,7 +37,7 @@ public abstract class GraphQlQueryArgs : IGraphQlQueryArgs
     {
         if (TypeUtils.IsNumeric(type)) return val?.ToString();
         if (val is bool) return val.ToString()?.ToLower();
-        return $"\"{val}\"";
+        return val is ShopifySortKey ? val.ToString() : $"\"{val}\"";
     }
 
     /// <summary>

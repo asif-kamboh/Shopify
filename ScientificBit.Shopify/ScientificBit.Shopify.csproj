@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <Nullable>enable</Nullable>
+        <TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
+        <Version>0.1.8-alpha</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,7 +15,6 @@
       <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
       <PackageReference Include="Refit.Newtonsoft.Json" Version="7.0.0" />
       <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
-      <PackageReference Include="Shopify.Multipass" Version="1.0.0-preview" />
     </ItemGroup>
 
     <ItemGroup>

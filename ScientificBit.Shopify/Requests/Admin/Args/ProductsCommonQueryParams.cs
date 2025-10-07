@@ -65,15 +65,15 @@ public class ProductsCommonQueryParams
         var tokens = new List<string>();
         if (((int) ProductStatus.Active & status.Value) > 0)
         {
-            tokens.Add(ProductStatus.Active.ToString().ToLower());
+            tokens.Add(nameof(ProductStatus.Active).ToLower());
         }
         if (((int) ProductStatus.Draft & status) > 0)
         {
-            tokens.Add(ProductStatus.Draft.ToString().ToLower());
+            tokens.Add(nameof(ProductStatus.Draft).ToLower());
         }
         if (((int) ProductStatus.Archived & status) > 0)
         {
-            tokens.Add(ProductStatus.Archived.ToString().ToLower());
+            tokens.Add(nameof(ProductStatus.Archived).ToLower());
         }
 
         return tokens.Count > 0 ? string.Join(",", tokens) : "";

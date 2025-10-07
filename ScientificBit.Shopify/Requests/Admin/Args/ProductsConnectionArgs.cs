@@ -1,5 +1,6 @@
 using ScientificBit.Shopify.Requests.GraphQl;
 using ScientificBit.Shopify.Enums;
+using ScientificBit.Shopify.Models;
 
 namespace ScientificBit.Shopify.Requests.Admin.Args;
 
@@ -7,7 +8,7 @@ public class ProductsConnectionArgs : GraphQlConnectionArgs
 {
     public ProductsQueryParams? Query { get; set; }
 
-    public string? SortKey { get; set; }
+    public ShopifySortKey? SortKey { get; set; }
 }
 
 public class ProductsQueryParams : ProductsCommonQueryParams

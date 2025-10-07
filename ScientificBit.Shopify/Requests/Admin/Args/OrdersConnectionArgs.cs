@@ -1,3 +1,4 @@
+using ScientificBit.Shopify.Models;
 using ScientificBit.Shopify.Requests.GraphQl;
 using ScientificBit.Shopify.Utils;
 
@@ -16,7 +17,7 @@ public class OrdersConnectionArgs : GraphQlConnectionArgs
     /// FULFILLMENT_STATUS, DESTINATION, CUSTOMER_NAME,
     /// PO_NUMBER, PROCESSED_AT
     /// </summary>
-    public string? SortKey { get; set; }
+    public ShopifySortKey? SortKey { get; set; }
 }
 
 public class OrdersQueryParams

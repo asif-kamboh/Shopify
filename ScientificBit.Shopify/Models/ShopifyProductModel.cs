@@ -3,7 +3,15 @@ using ScientificBit.Shopify.Models.Base;
 
 namespace ScientificBit.Shopify.Models;
 
-public class ShopifyProductModel : ShopifyBaseModel
+public class ShopifyProductDetailedModel : ShopifyProductModel<ShopifyVariantModel>
+{
+}
+
+public class ShopifyProductModel : ShopifyProductModel<ShopifyVariantSummary>
+{
+}
+
+public class ShopifyProductModel<TVariant> : ShopifyBaseModel where TVariant : new()
 {
     public string? Title { get; set; }
 
@@ -21,7 +29,13 @@ public class ShopifyProductModel : ShopifyBaseModel
 
     public List<string> Tags { get; set; } = new List<string>();
 
-    public GraphQlConnection<ShopifyImage>? Images { get; set; }
+    public ShopifyProductCategory? Category { get; set; }
+
+    public GraphQlConnection<ShopifyMedia>? Media { get; set; }
+
+    public GraphQlConnection<ShopifyMedia>? Images => Media;
+
+    public GraphQlConnection<TVariant>? Variants { get; set; }
 
     public SeoModel? Seo { get; set; }
 
@@ -51,7 +65,7 @@ public class ShopifyProductModel : ShopifyBaseModel
 
     public List<string?>? ImageUrls()
     {
-        return Images?.Nodes?.Select(i => i.Url).ToList();
+        return Images?.Nodes?.Select(i => i.Image?.Url).Where(u => u != null).ToList();
     }
 
     public int? OrderLimit()

@@ -12,6 +12,10 @@ public class ShopifyDiscountApplication
 
     public string? Title { get; set; }
 
+    public string? Code { get; set; }
+
+    public string? GetDiscountCode() => Code ?? Title;
+
     public ShopifyPricingValue? Value { get; set; }
 
     public string Type => IsPercentage() ? "percentage" : "fixed_amount";

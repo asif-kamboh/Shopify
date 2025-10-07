@@ -40,7 +40,9 @@ internal class ShopifyProductsRepository : IShopifyProductsRepository
         var query = builder.Build(new {Id = productId});
         var response = await _apiClient.RunQueryAsync<ProductGetResponse<TProduct>>(query);
 
-        return GraphQlResultMapper.CreateResult(response.Data.Product, response.Data.UserErrors, response.Errors);
+        return GraphQlResultMapper.BuildResult(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.Product, response.Data.UserErrors, response.Errors)
+        );
     }
 
     public Task<GraphQlResult<ShopifyBaseModel>> CreateProductAsync(ProductCreateInput product)
@@ -85,7 +87,9 @@ internal class ShopifyProductsRepository : IShopifyProductsRepository
 
         var response = await _apiClient.RunQueryAsync<ProductsGetResponse<TProduct>>(query);
 
-        return GraphQlResultMapper.CreateResult(response.Data.Products, response.Data.UserErrors, response.Errors);
+        return GraphQlResultMapper.BuildResults(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.Products, response.Data.UserErrors, response.Errors)
+        );
     }
 }
 

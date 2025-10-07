@@ -4,6 +4,8 @@ using ScientificBit.Shopify.Builders.Query;
 using ScientificBit.Shopify.Mappers;
 using ScientificBit.Shopify.Models;
 using ScientificBit.Shopify.Models.Base;
+using ScientificBit.Shopify.Requests;
+using ScientificBit.Shopify.Requests.Admin.Mutations;
 using ScientificBit.Shopify.Views;
 
 namespace ScientificBit.Shopify.Domain;
@@ -51,8 +53,52 @@ internal class ShopifyOrdersRepository : ShopifyBaseRepository, IShopifyOrdersRe
         var query = queryBuilder.Build();
 
         var response = await _apiClient.RunQueryAsync<OrdersGetResponse<TOrder>>(query);
+        return GraphQlResultMapper.BuildResults(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.Orders, response.Data.UserErrors, response.Errors)
+        );
+    }
 
-        return GraphQlResultMapper.CreateResult(response.Data.Orders, response.Data.UserErrors, response.Errors);
+    public async Task<GraphQlResult<DraftOrderModel>> CreateOrderAsync(DraftOrderInput payload, bool isPaid = false)
+    {
+        var draftOrderResult = await CreateDraftOrder(payload);
+        if (string.IsNullOrEmpty(draftOrderResult.Data?.Id)) return new GraphQlResult<DraftOrderModel>()
+        {
+            Error = draftOrderResult.Error,
+            GraphQlErrors = draftOrderResult.GraphQlErrors
+        };
+
+        var orderResult = await CompleteDraftOrder(draftOrderResult.Data?.Id ?? "", isPaid);
+        return orderResult;
+    }
+
+    public async Task<GraphQlResult<ShopifyBaseModel>> CreateDraftOrder(DraftOrderInput payload)
+    {
+        var mutation = new DraftOrderCreateMutation
+        {
+            Variables = new { Input = payload }
+        };
+
+        var response = await _apiClient.RunMutationAsync<ShopifyMutationResponse>(mutation);
+
+        return GraphQlResultMapper.BuildResult(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.Result?.Data, response.Data.Result?.UserErrors,
+                response.Errors)
+        );
+    }
+
+    public async Task<GraphQlResult<DraftOrderModel>> CompleteDraftOrder(string draftOrderId, bool isPaid = false)
+    {
+        var mutation = new DraftOrderCompleteMutation
+        {
+            Variables = new { Id = draftOrderId, PaymentPending = !isPaid }
+        };
+
+        var response = await _apiClient.RunMutationAsync<ShopifyMutationResponse<DraftOrderModel>>(mutation);
+
+        return GraphQlResultMapper.BuildResult(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.Result?.Data, response.Data.Result?.UserErrors,
+                response.Errors)
+        );
     }
 
     #region Helper methods
@@ -66,8 +112,9 @@ internal class ShopifyOrdersRepository : ShopifyBaseRepository, IShopifyOrdersRe
         var query = queryBuilder.Build(new {Id = orderId});
 
         var response = await _apiClient.RunQueryAsync<OrderGetResponse<TOrder>>(query);
-
-        return GraphQlResultMapper.CreateResult(response.Data.Order, response.Data.UserErrors, response.Errors);
+        return GraphQlResultMapper.BuildResult(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.Order, response.Data.UserErrors, response.Errors)
+        );
     }
 
     #endregion

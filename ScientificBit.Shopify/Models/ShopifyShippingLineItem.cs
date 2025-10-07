@@ -18,7 +18,11 @@ public class ShopifyShippingLineItem : ShopifyBaseModel
 
     public bool? Custom { get; set; }
 
-    public double Price => CurrentDiscountedPriceSet?.Value ?? DiscountedPriceSet?.Value ?? 0;
+    // public double Price => CurrentDiscountedPriceSet?.Value ?? DiscountedPriceSet?.Value ?? 0;
+
+    public double? Price => OriginalPriceSet?.Value;
+
+    public double? DiscountedPrice => DiscountedPriceSet?.Value;
 
     public ShopifyPriceSet? CurrentDiscountedPriceSet { get; set; }
 
