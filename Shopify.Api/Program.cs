@@ -3,6 +3,7 @@ using ScientificBit.Shopify.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -10,11 +11,16 @@ builder.Services.AddSwaggerGen();
 // Add Shopify Support
 builder.Services.AddShopify(opts =>
 {
+    var adminApiToken = Environment.GetEnvironmentVariable("SHOPIFY_ADMIN_API_TOKEN") ?? "shopify-admin-token";
+    var storefrontApiToken = Environment.GetEnvironmentVariable("SHOPIFY_STORE_API_TOKEN") ?? "shopify-storefront-token";
+    var shopifyApiSecret = Environment.GetEnvironmentVariable("SHOPIFY_API_SECRET") ?? "shopify-api-secret";
+
     opts.Configuration = builder.Configuration.GetSection("Shopify");
     opts.MultipassSecret = ""; // TODO: Read from ENV
     opts.StoreDomain = "https://www.scientificbit.com"; // Your store website
-    opts.AddSalesChannelTokens("sb", "shopify-admin-token", "shopify-storefront-token", "shopify-api-secret");
+    opts.AddDefaultSalesChannelTokens(adminApiToken, storefrontApiToken, shopifyApiSecret);
 });
+
 // Add Shopify Webhook Authentication
 builder.Services.AddAuthentication()
     .AddShopifyWebhookAuthentication(ShopifyAuthSchemes.ShopifyWebhookAuth);
@@ -51,7 +57,6 @@ app.MapGet("/weatherforecast", () =>
     .WithOpenApi();
 
 app.UseAuthentication();
-app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
