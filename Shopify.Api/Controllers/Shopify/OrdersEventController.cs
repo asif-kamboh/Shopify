@@ -9,7 +9,7 @@ namespace Shopify.Api.Controllers.Shopify;
 
 [ApiController]
 [Authorize(AuthenticationSchemes = ShopifyAuthSchemes.ShopifyWebhookAuth)]
-[Route("api/v{version:apiVersion}/shopify/events/orders")]
+[Route("api/shopify/events/orders")]
 public class OrdersEventController : ControllerBase
 {
     private readonly IShopifyOrdersRepository _ordersRepository;

@@ -12,8 +12,14 @@ public class ShopifyConfigOptions
 
     public string StoreDomain { get; set; } = string.Empty;
 
-    public ShopifyConfigOptions AddSalesChannelTokens(string salesChannelId, string adminApiToken, string storefrontApiToken,
+    public ShopifyConfigOptions AddDefaultSalesChannelTokens(string adminApiToken, string storefrontApiToken,
         string webhookApiSecret)
+    {
+        return AddSalesChannelTokens(string.Empty, adminApiToken, storefrontApiToken, webhookApiSecret);
+    }
+
+    public ShopifyConfigOptions AddSalesChannelTokens(string salesChannelId, string adminApiToken,
+        string storefrontApiToken, string webhookApiSecret)
     {
         _salesChannelTokens.Add(new SalesChannelSecrets(salesChannelId)
         {

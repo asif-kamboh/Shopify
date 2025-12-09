@@ -10,6 +10,10 @@ internal class ShopifyConfigurationBuilder
         shopifyConfig.MultipassSecret = opts.MultipassSecret;
         shopifyConfig.StoreDomain = opts.StoreDomain;
 
+        if (shopifyConfig.SalesChannels.Count == 0)
+        {
+            shopifyConfig.SalesChannels.Add(new SalesChannelConfig());
+        }
         foreach (var channel in shopifyConfig.SalesChannels)
         {
             var secrets = opts.SalesChannelTokens.FirstOrDefault(c => c.SalesChannelId == channel.SalesChannelId);
