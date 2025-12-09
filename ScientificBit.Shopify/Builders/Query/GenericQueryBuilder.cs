@@ -185,8 +185,9 @@ public static class GenericQueryBuilderExtensions
 
     public static TBuilder AddMetafield<TBuilder>(this TBuilder builder, string ns, string key, string? alias)  where TBuilder : GenericQueryBuilder
     {
+        var field = MetafieldFragment.ResolveName(alias);
         var args = new MetafieldQueryArgs { Namespace = ns, Key = key };
-        return builder.AddFragment(new MetafieldFragment(alias, args));
+        return builder.AddFragment(new MetafieldFragment(field, args));
     }
 
     public static TBuilder AddMetafields<TBuilder>(this TBuilder builder, string ns, int count = 10)  where TBuilder : GenericQueryBuilder

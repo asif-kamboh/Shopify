@@ -1,3 +1,5 @@
+using ScientificBit.Shopify.Builders.Fragments;
+
 namespace ScientificBit.Shopify.Requests.GraphQl;
 
 internal abstract class GraphQlQueryBase : GraphQlRequestBase, IGraphQlQuery
@@ -25,7 +27,7 @@ internal abstract class GraphQlQueryBase : GraphQlRequestBase, IGraphQlQuery
 
     public void AddMetafield(string ns, string key, string? alias)
     {
-        var field = string.IsNullOrEmpty(alias) ? "metafield" : $"{alias}: metafield";
+        var field = MetafieldFragment.ResolveName(alias);
         var args = new MetafieldQueryArgs { Namespace = ns, Key = key };
         AddCompositeField(field, _metafieldKeys, args);
     }

@@ -9,4 +9,10 @@ public sealed class MetafieldFragment : GraphQlFragment
     {
         AddFields(new[] {"id", "key", "value", "type", "description", "namespace"});
     }
+
+    public static string ResolveName(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return "metafield";
+        return name.Split(":").Last() != "metafield" ? $"{name}:metafield" : name;
+    }
 }
