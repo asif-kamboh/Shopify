@@ -31,6 +31,9 @@ public static class ShopifyServicesExtension
             services.AddScoped<IShopifyMultipassTokenGenerator>(_ =>
                 new ShopifyMultipassTokenGenerator(shopifyConfig.MultipassSecret, shopifyConfig.StoreDomain));
         }
+
+        services.AddScoped<ShopifyAdminApiMessageHandler>();
+        services.AddScoped<StorefrontApiMessageHandler>();
         services.AddScoped<IAdminApiClient, AdminApiClient>();
         services.AddScoped<IStorefrontApiClient, StorefrontApiClient>();
         services.AddScoped<IShopifyMetaObjectService, ShopifyMetaObjectService>();

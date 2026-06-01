@@ -11,14 +11,12 @@ namespace ScientificBit.Shopify.Clients.GraphQl;
 internal abstract class ShopifyGraphApiClient
 {
     private readonly string _graphQlUrl;
-    private readonly string _authHeaderName;
-    private readonly string _authToken;
+    private readonly GraphQLHttpClient _client;
 
-    protected ShopifyGraphApiClient(string graphQlUrl, string authHeaderName, string authToken)
+    protected ShopifyGraphApiClient(string graphQlUrl, HttpClientHandler httpMessageHandler)
     {
         _graphQlUrl = graphQlUrl;
-        _authHeaderName = authHeaderName;
-        _authToken = authToken;
+        _client = GetClient(httpMessageHandler);
     }
 
     public Task<GraphQLResponse<T>> RunQueryAsync<T>(string query, object? variables) where T : class
@@ -31,8 +29,7 @@ internal abstract class ShopifyGraphApiClient
         var graphQlRequest = payload.ToGraphQlRequest();
         try
         {
-            using var client = GetClient();
-            var response = await client.SendQueryAsync<T>(graphQlRequest);
+            var response = await _client.SendQueryAsync<T>(graphQlRequest);
             return response;
         }
         catch (GraphQLHttpRequestException ex)
@@ -55,8 +52,7 @@ internal abstract class ShopifyGraphApiClient
         var graphQlRequest = payload.ToGraphQlRequest();
         try
         {
-            using var client = GetClient();
-            var response = await client.SendMutationAsync<T>(graphQlRequest);
+            var response = await _client.SendMutationAsync<T>(graphQlRequest);
             return response;
         }
         catch (GraphQLHttpRequestException ex)
@@ -69,12 +65,12 @@ internal abstract class ShopifyGraphApiClient
         }
     }
 
-    private GraphQLHttpClient GetClient()
+    private GraphQLHttpClient GetClient(HttpClientHandler httpMessageHandler)
     {
         var opts = new GraphQLHttpClientOptions
         {
             EndPoint = new Uri(_graphQlUrl),
-            HttpMessageHandler = new GraphQlApiMessageHandler(_authHeaderName,_authToken)
+            HttpMessageHandler = httpMessageHandler
         };
 
         return new GraphQLHttpClient(opts, new NewtonsoftJsonSerializer
@@ -85,26 +81,5 @@ internal abstract class ShopifyGraphApiClient
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
             }
         });
-    }
-}
-
-internal class GraphQlApiMessageHandler : HttpClientHandler
-{
-    private readonly string _authHeaderName;
-    private readonly string _authToken;
-
-    public GraphQlApiMessageHandler(string authHeaderName, string authToken)
-    {
-        _authHeaderName = authHeaderName;
-        _authToken = authToken;
-    }
-
-    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
-        CancellationToken cancellationToken)
-    {
-        request.Headers.Add(_authHeaderName, _authToken);
-
-        // Proceed with the request
-        return await base.SendAsync(request, cancellationToken);
     }
 }

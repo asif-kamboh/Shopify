@@ -22,7 +22,7 @@ internal class DefaultApiTokensAccessor : IShopifyApiTokensAccessor
 
     public string WebhookApiSecret => GetSalesChannel().WebhookApiSecret;
 
-    private SalesChannelConfig GetSalesChannel()
+    public SalesChannelConfig GetSalesChannel()
     {
         var salesChannelId = _contextAccessor.GetShopifyChannelId();
         return _config.SalesChannels.FirstOrDefault(c => c.SalesChannelId == salesChannelId)

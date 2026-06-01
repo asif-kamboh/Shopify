@@ -23,6 +23,7 @@ public class OrderQueryBuilder : GenericQueryBuilder<OrdersConnectionArgs>
     public static OrderQueryBuilder QueryById(bool detailed = false)
     {
         var builder = new OrderQueryBuilder("getOrderById($id: ID!)", "order(id: $id)", DefaultFields);
+        builder.AddDefaultFields();
         if (detailed)
         {
             builder.AddDetailedFields();
@@ -38,6 +39,7 @@ public class OrderQueryBuilder : GenericQueryBuilder<OrdersConnectionArgs>
     public static OrderQueryBuilder QueryAll(OrdersConnectionArgs args)
     {
         var builder = new OrderQueryBuilder("orders", "orders", DefaultFields, args);
+        builder.AddDefaultFields();
         return builder;
     }
 

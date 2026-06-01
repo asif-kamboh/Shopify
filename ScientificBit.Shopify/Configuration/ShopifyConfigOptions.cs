@@ -30,6 +30,19 @@ public class ShopifyConfigOptions
         return this;
     }
 
+    public ShopifyConfigOptions AddSalesChannelTokens(string salesChannelId, string clientId, string clientSecret,
+        string storefrontApiToken, string webhookApiSecret)
+    {
+        _salesChannelTokens.Add(new SalesChannelSecrets(salesChannelId)
+        {
+            ClientId = clientId,
+            ClientSecret = clientSecret,
+            StorefrontApiToken = storefrontApiToken,
+            WebhookApiSecret = webhookApiSecret
+        });
+        return this;
+    }
+
     public SalesChannelSecrets[] SalesChannelTokens => _salesChannelTokens.ToArray();
 }
 
@@ -41,6 +54,16 @@ public class SalesChannelSecrets
     }
 
     internal string? SalesChannelId { get; }
+
+    /// <summary>
+    /// New Auth mechansim for Shopify Admin APIs
+    /// </summary>
+    internal string? ClientId { get; set; }
+
+    /// <summary>
+    /// New Auth mechansim for Shopify Admin APIs
+    /// </summary>
+    internal string? ClientSecret { get; set; }
 
     internal string? AdminApiToken { get; set; }
 
