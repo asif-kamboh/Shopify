@@ -46,6 +46,10 @@ public static class ShopifyUtils
 
     public static string GetOrderId(long orderId) => $"gid://shopify/Order/{orderId}";
 
+    public static string GetDraftOrderId(long draftOrderId) => $"gid://shopify/DraftOrder/{draftOrderId}";
+
+    public static string GetDraftOrderId(string? draftOrderId) => $"gid://shopify/DraftOrder/{GetNumericId(draftOrderId)}";
+
     /// <summary>
     /// Computes Hash using HMACSHA256 algorithm
     /// </summary>

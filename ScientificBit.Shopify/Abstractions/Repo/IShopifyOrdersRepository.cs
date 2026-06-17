@@ -19,9 +19,18 @@ public interface IShopifyOrdersRepository
 
     Task<GraphQlResults<TOrder>> GetOrdersAsync<TOrder>(Action<OrderQueryBuilder> builder) where TOrder : new();
 
+    Task<GraphQlResult<DraftOrderModel>> GetDraftOrderById(string draftOrderId);
+
+    Task<GraphQlResult<TDraftOrder>> GetDraftOrderById<TDraftOrder>(string draftOrderId) where TDraftOrder : new();
+
+    Task<GraphQlResult<DraftOrderModel>> GetDraftOrderById(string draftOrderId, Action<DraftOrderQueryBuilder> builder);
+
+    Task<GraphQlResult<TDraftOrder>> GetDraftOrderById<TDraftOrder>(string draftOrderId,
+        Action<DraftOrderQueryBuilder> builder) where TDraftOrder : new();
+
     Task<GraphQlResult<DraftOrderModel>> CreateOrderAsync(DraftOrderInput payload, bool isPaid = false);
 
-    Task<GraphQlResult<ShopifyBaseModel>> CreateDraftOrder(DraftOrderInput payload);
+    Task<GraphQlResult<DraftOrderModel>> CreateDraftOrder(DraftOrderInput payload);
 
     Task<GraphQlResult<DraftOrderModel>> CompleteDraftOrder(string draftOrderId, bool isPaid = false);
 }

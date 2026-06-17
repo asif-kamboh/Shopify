@@ -6,6 +6,7 @@ using ScientificBit.Shopify.Models;
 using ScientificBit.Shopify.Models.Base;
 using ScientificBit.Shopify.Requests;
 using ScientificBit.Shopify.Requests.Admin.Mutations;
+using ScientificBit.Shopify.Utils;
 using ScientificBit.Shopify.Views;
 
 namespace ScientificBit.Shopify.Domain;
@@ -58,6 +59,36 @@ internal class ShopifyOrdersRepository : ShopifyBaseRepository, IShopifyOrdersRe
         );
     }
 
+    public Task<GraphQlResult<DraftOrderModel>> GetDraftOrderById(string draftOrderId)
+    {
+        return GetDraftOrderById<DraftOrderModel>(draftOrderId, _ => { });
+    }
+
+    public Task<GraphQlResult<TDraftOrder>> GetDraftOrderById<TDraftOrder>(string draftOrderId) where TDraftOrder : new()
+    {
+        return GetDraftOrderById<TDraftOrder>(draftOrderId, _ => { });
+    }
+
+    public Task<GraphQlResult<DraftOrderModel>> GetDraftOrderById(string draftOrderId, Action<DraftOrderQueryBuilder> builder)
+    {
+        return GetDraftOrderById<DraftOrderModel>(draftOrderId, builder);
+    }
+
+    public async Task<GraphQlResult<TDraftOrder>> GetDraftOrderById<TDraftOrder>(string draftOrderId, Action<DraftOrderQueryBuilder> builder) where TDraftOrder : new()
+    {
+        var queryBuilder = DraftOrderQueryBuilder.QueryById();
+        builder.Invoke(queryBuilder);
+
+        draftOrderId = ShopifyUtils.GetDraftOrderId(draftOrderId);
+
+        var query = queryBuilder.Build(new { Id = draftOrderId });
+
+        var response = await _apiClient.RunQueryAsync<DraftOrderGetResponse<TDraftOrder>>(query);
+        return GraphQlResultMapper.BuildResult(response, () =>
+            GraphQlResultMapper.CreateResult(response.Data.DraftOrder, response.Data.UserErrors, response.Errors)
+        );
+    }
+
     public async Task<GraphQlResult<DraftOrderModel>> CreateOrderAsync(DraftOrderInput payload, bool isPaid = false)
     {
         var draftOrderResult = await CreateDraftOrder(payload);
@@ -71,14 +102,14 @@ internal class ShopifyOrdersRepository : ShopifyBaseRepository, IShopifyOrdersRe
         return orderResult;
     }
 
-    public async Task<GraphQlResult<ShopifyBaseModel>> CreateDraftOrder(DraftOrderInput payload)
+    public async Task<GraphQlResult<DraftOrderModel>> CreateDraftOrder(DraftOrderInput payload)
     {
         var mutation = new DraftOrderCreateMutation
         {
             Variables = new { Input = payload }
         };
 
-        var response = await _apiClient.RunMutationAsync<ShopifyMutationResponse>(mutation);
+        var response = await _apiClient.RunMutationAsync<ShopifyMutationResponse<DraftOrderModel>>(mutation);
 
         return GraphQlResultMapper.BuildResult(response, () =>
             GraphQlResultMapper.CreateResult(response.Data.Result?.Data, response.Data.Result?.UserErrors,
@@ -128,4 +159,9 @@ public sealed class OrderGetResponse<TOrder> : AdminApiResponse where TOrder : n
 public class OrdersGetResponse<TOrder> : AdminApiResponse where TOrder : new()
 {
     public GraphQlConnection<TOrder>? Orders { get; set; }
+}
+
+public sealed class DraftOrderGetResponse<TDraftOrder> : AdminApiResponse where TDraftOrder : new()
+{
+    public TDraftOrder? DraftOrder { get; set; }
 }
