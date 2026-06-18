@@ -44,6 +44,7 @@ public static class ShopifyServicesExtension
         services.AddScoped<IShopifyVariantsRepository, ShopifyVariantsRepository>();
         services.AddScoped<IShopifyOrdersRepository, ShopifyOrdersRepository>();
         services.AddScoped<IShopifyMetafieldsRepository, ShopifyMetafieldsRepository>();
+        services.AddScoped<IShopifyMarketCatalogsRepository, ShopifyMarketCatalogsRepository>();
 
         services.AddHttpContextAccessor();
         return services;
