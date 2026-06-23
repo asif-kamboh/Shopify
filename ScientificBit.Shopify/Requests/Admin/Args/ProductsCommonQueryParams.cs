@@ -9,7 +9,15 @@ public class ProductsCommonQueryParams
 
     public GraphQlIdQueryStringParam? Id { get; set; }
 
+    /// <summary>
+    /// Query by given SKU. If `Skus` field is defined `Sku` field will be ignored
+    /// </summary>
     public string? Sku { get; set; }
+
+    /// <summary>
+    /// Query by given SKUs. If `Skus` field is defined `Sku` field will be ignored
+    /// </summary>
+    public IList<string>? Skus { get; set; }
 
     public string? Barcode { get; set; }
 
@@ -36,7 +44,11 @@ public class ProductsCommonQueryParams
         if (!string.IsNullOrEmpty(Default)) tokens.Add($"default:{Default}");
         if (!string.IsNullOrEmpty(Title)) tokens.Add($"title:{Title}");
         if (!string.IsNullOrEmpty(Barcode)) tokens.Add($"barcode:{Barcode}");
-        if (!string.IsNullOrEmpty(Sku)) tokens.Add($"sku:{Sku}");
+        if (Skus is { Count: > 0 })
+        {
+            tokens.Add($"sku:'{string.Join("' OR sku:'", Skus)}'");
+        }
+        else if (!string.IsNullOrEmpty(Sku)) tokens.Add($"sku:{Sku}");
         if (!string.IsNullOrEmpty(Vendor)) tokens.Add($"vendor:{Vendor}");
         if (!string.IsNullOrEmpty(CategoryId)) tokens.Add($"category_id:{CategoryId}");
 
