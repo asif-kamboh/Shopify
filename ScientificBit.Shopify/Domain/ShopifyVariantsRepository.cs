@@ -114,6 +114,50 @@ internal class ShopifyVariantsRepository : IShopifyVariantsRepository
         throw new NotImplementedException();
     }
 
+    public Task<GraphQlResult<ShopifyBaseModel>> UpdateVariantAsync(string productId, ProductVariantUpdateInput variant)
+    {
+        return UpdateVariantAsync<ShopifyBaseModel>(productId, variant);
+    }
+
+    public async Task<GraphQlResult<TVariant>> UpdateVariantAsync<TVariant>(string productId,
+        ProductVariantUpdateInput variant) where TVariant : new()
+    {
+        var result =
+            await UpdateVariantsAsync<TVariant>(productId, new List<ProductVariantUpdateInput> { variant }, false);
+        return new GraphQlResult<TVariant>
+        {
+            Data = result.Data.FirstOrDefault(),
+            Error = result.Error,
+            GraphQlErrors = result.GraphQlErrors
+        };
+    }
+
+    public Task<GraphQlResults<ShopifyBaseModel>> UpdateVariantsAsync(string productId,
+        IList<ProductVariantUpdateInput> variants, bool allowPartialUpdates)
+    {
+        return UpdateVariantsAsync<ShopifyBaseModel>(productId, variants, allowPartialUpdates);
+    }
+
+    public async Task<GraphQlResults<TVariant>> UpdateVariantsAsync<TVariant>(string productId,
+        IList<ProductVariantUpdateInput> variants, bool allowPartialUpdates) where TVariant : new()
+    {
+        productId = productId.StartsWith("gid://") ? productId : $"gid://shopify/Product/{productId}";
+        var mutation = new VariantsUpdateMutation
+        {
+            Variables = new
+            {
+                AllowPartialUpdates = allowPartialUpdates,
+                ProductId = productId,
+                Variants = variants
+            }
+        };
+
+        var response = await _client.RunMutationAsync<VariantsUpdateResponse<TVariant>>(mutation);
+        var result = response.Data?.ProductVariantsBulkUpdate;
+
+        return GraphQlResultMapper.CreateResult(result?.ProductVariants, result?.UserErrors, response.Errors);
+    }
+
     public Task<GraphQlResult<List<string>>> DeleteVariantAsync(string productId, string variantId)
     {
         return DeleteVariantsAsync(productId, new[] {variantId});
@@ -147,6 +191,16 @@ internal class VariantsCreateResponse<TVariant> where TVariant : new()
     public VariantsCreateResult? ProductVariantsBulkCreate { get; set; }
 
     public class VariantsCreateResult : AdminApiResponse
+    {
+        public IList<TVariant>? ProductVariants { get; set; }
+    }
+}
+
+internal class VariantsUpdateResponse<TVariant> where TVariant : new()
+{
+    public VariantsUpdateResult? ProductVariantsBulkUpdate { get; set; }
+
+    public class VariantsUpdateResult : AdminApiResponse
     {
         public IList<TVariant>? ProductVariants { get; set; }
     }
