@@ -18,5 +18,15 @@ public enum ProductStatus
     /// <summary>
     /// Product is archived
     /// </summary>
-    Archived = 4
+    Archived = 4,
+
+    /// <summary>
+    /// Product is unlisted
+    /// </summary>
+    Unlisted = 8,
+
+    /// <summary>
+    /// Product is marked deleted
+    /// </summary>
+    Deleted = 16
 }

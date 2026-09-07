@@ -87,6 +87,14 @@ public class ProductsCommonQueryParams
         {
             tokens.Add(nameof(ProductStatus.Archived).ToLower());
         }
+        if (((int) ProductStatus.Unlisted & status) > 0)
+        {
+            tokens.Add(nameof(ProductStatus.Unlisted).ToLower());
+        }
+        if (((int) ProductStatus.Deleted & status) > 0)
+        {
+            tokens.Add(nameof(ProductStatus.Deleted).ToLower());
+        }
 
         return tokens.Count > 0 ? string.Join(",", tokens) : "";
     }
